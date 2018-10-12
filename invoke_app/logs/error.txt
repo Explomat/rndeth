@@ -1,0 +1,2 @@
+2018-10-12T20:36:22.947Z : Impossible make transaction, conditions not done
+2018-10-12T20:37:14.664Z : Impossible make transaction, conditions not done

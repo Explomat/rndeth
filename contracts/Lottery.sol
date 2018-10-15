@@ -7,9 +7,9 @@ contract Lottery is Ownable, usingOraclize {
 	
 	event event_log(string str);
 	event event_log_uint(uint str);
-	event event_random_query_request(string rqreq);
-	event event_random_query_result(string rqres);
-	event event_transfer(address t);
+	event event_random_query_request(string indexed rqreq);
+	event event_random_query_result(string indexed rqres);
+	event event_transfer(address indexed t);
 	event event_error(string e);
 
 	uint public counter;
@@ -108,12 +108,12 @@ contract Lottery is Ownable, usingOraclize {
 		require(msg.sender == oraclize_cbAddress(), 'Caller is not Oraclize address!');
         require(pendingQueries[myid], 'Query has already been processed!');
 
-		emit event_random_query_result('Oraclize computation query was received');
 		rndNumber = parseInt(result);
 		distributeFunds(rndNumber);
 		reset();
 		counter++; // increment lottery counter
 		delete pendingQueries[myid];
+		emit event_random_query_result('Oraclize computation query was received');
 	}
 
 	function distributeFunds(uint winningNumber) private {

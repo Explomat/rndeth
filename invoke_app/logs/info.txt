@@ -1,4 +1,9 @@
-2018-10-12T20:36:22.946Z : isLotteryActive: true
-2018-10-12T20:36:22.947Z : playersCount: 0
-2018-10-12T20:37:14.664Z : isLotteryActive: true
-2018-10-12T20:37:14.664Z : playersCount: 0
+2018-10-15T03:05:37.452Z : LotteryDaily.isLotteryActive = true
+2018-10-15T03:05:37.453Z : LotteryDaily.playersCount = 0
+2018-10-15T03:05:37.453Z : LotteryDaily.timeout = 180
+2018-10-15T03:05:37.492Z : LotteryMonth.isLotteryActive = true
+2018-10-15T03:05:37.492Z : LotteryMonth.playersCount = 0
+2018-10-15T03:05:37.492Z : LotteryMonth.timeout = 540
+2018-10-15T03:05:37.503Z : LotteryWeek.isLotteryActive = true
+2018-10-15T03:05:37.503Z : LotteryWeek.playersCount = 0
+2018-10-15T03:05:37.503Z : LotteryWeek.timeout = 360

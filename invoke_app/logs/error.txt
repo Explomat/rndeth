@@ -1,3 +1,3 @@
-2018-10-15T03:05:37.663Z : LotteryWeek. Events error while received: Error: Returned error: invalid argument 0: hex has invalid length 128 after decoding; expected 32 for topic
-2018-10-15T03:05:37.694Z : LotteryMonth. Events error while received: Error: Returned error: invalid argument 0: hex has invalid length 128 after decoding; expected 32 for topic
-2018-10-15T03:05:37.823Z : LotteryDaily. Events error while received: Error: Returned error: invalid argument 0: hex has invalid length 128 after decoding; expected 32 for topic
+2018-10-16T01:01:28.143Z  LotteryWeek: Impossible make transaction, conditions not done
+2018-10-16T01:01:28.239Z  LotteryDaily: Impossible make transaction, conditions not done
+2018-10-16T01:01:28.431Z  LotteryMonth: Impossible make transaction, conditions not done

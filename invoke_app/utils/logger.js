@@ -1,25 +1,45 @@
 const fs = require('fs');
 
 function Logger(options) {
-	const _options = options || {};
-	this.infoStream = fs.createWriteStream((_options.infoPath || './info.txt'), { flags : 'a' });
-	this.errorStream = fs.createWriteStream((_options.errorPath || './error.txt'), { flags : 'a' });
-	this.debugStream = fs.createWriteStream((_options.debugPath || './debug.txt'), { flags : 'a' });
+	this.options = options || {};
 };
 
-Logger.prototype.info = function(msg) {
-	const message = new Date().toISOString() + " : " + msg + "\n";
-	this.infoStream.write(message);
-};
+Logger.prototype = (function(){
 
-Logger.prototype.debug = function(msg) {
-	const message = new Date().toISOString() + " : " + msg + "\n";
-	this.debugStream.write(message);
-};
+	let infoStream, errorStream, debugStream;
 
-Logger.prototype.error = function(msg) {
-	const message = new Date().toISOString() + " : " + msg + "\n";
-	this.errorStream.write(message);
-};
+	function reduceMessage(args){
+		args[0] = args[0] + ': ';
+		const str = args.reduce((first, second) => {
+			return first + second;
+		}, '');
+		return new Date().toISOString() + '  ' + str + '\n';
+	}
+
+	return {
+		constructor: Logger,
+
+		createStreams: function(){
+			infoStream = fs.createWriteStream((this.options.infoPath || './info.txt'), { flags : 'a' });
+			errorStream = fs.createWriteStream((this.options.errorPath || './error.txt'), { flags : 'a' });
+			debugStream = fs.createWriteStream((this.options.debugPath || './debug.txt'), { flags : 'a' });
+		},
+		info: function(){
+			const args = Array.prototype.slice.call(arguments);
+			const message = reduceMessage(args);
+			infoStream.write(message);
+		},
+		debug: function(){
+			const args = Array.prototype.slice.call(arguments);
+			const message = reduceMessage(args);
+			debugStream.write(message);
+		},
+		error: function(){
+			const args = Array.prototype.slice.call(arguments);
+			const message = reduceMessage(args);
+			errorStream.write(message);
+		}
+	}
+})();
 
 module.exports = Logger;

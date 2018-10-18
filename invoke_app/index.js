@@ -37,13 +37,16 @@ const getCurrentGasPrices = async () => {
 	}
 }
 
-
 const privateKey = Buffer.from(accountData.private_key, 'hex');
 const infuraAccessToken = accountData.infura_access_token;
 const account = accountData.address;
 const contracts = getContracts();
 
-const provider = new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/' + infuraAccessToken);
+const providerUrl =
+	process.env.NODE_ENV === 'development' ?
+		'http://localhost:8545' :
+		'https://rinkeby.infura.io/v3/' + infuraAccessToken;
+const provider = new Web3.providers.HttpProvider(providerUrl);
 const web3 = new Web3(provider);
 
 contracts.forEach(c => {
@@ -116,7 +119,7 @@ contracts.forEach(c => {
 				nonce: '0x' + nonce.toString(16),
 				chainId: parseInt(networkId, 10), //not working, when it has type "string"
 				gasPrice: '0x' + (gPrice.low * 1000000000).toString(16),
-				gasLimit: '0x' + estimatedGas.toString(16),
+				gasLimit: '0x' + Math.floor(estimatedGas).toString(16),
 				from: account,
 				to: contractAddress,
 				data: functionAbi

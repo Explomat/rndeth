@@ -6,35 +6,36 @@ import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
 contract Lottery is Ownable, usingOraclize {
 	
 	event event_log(string str);
-	event event_log_uint(uint str);
-	event event_random_query_request(string indexed rqreq);
-	event event_random_query_result(string indexed rqres);
-	event event_transfer(address indexed t);
+	event event_log_uint(uint elu);
+	event event_random_query_request(string rqreq);
+	event event_random_query_result(string rqres);
+	event event_transfer(address t);
 	event event_error(string e);
 
+	// lottery couner
 	uint public counter;
 
-	//player bet
+	// next query id
+	bytes32 nextQueryId;
+
+	// player bet
 	uint public equalBet;
 
 	uint public totalBalance;
 	uint public playersCount;
 
-	//lottery percent comission
+	// lottery percent comission
 	uint public commission;
 
-	//generating random number
+	// generating random number
 	uint public rndNumber; 
 
-	//ipfs hash
+	// ipfs hash
 	string public ipfsHash;
 
 	// disable players bet when process oraclize request
-	// If callback never executed, we will invoke determineWinner() on next step
 	bool public isLotteryActive;
 	uint constant ORACLIZE_GAS_LIMIT = 300000;
-
-	string public _result;
 
 	struct Player {
 		address recipient;
@@ -56,7 +57,6 @@ contract Lottery is Ownable, usingOraclize {
 	}
 
 	function bet() public payable {
-		emit event_log_uint(msg.value);
 		require(msg.value == equalBet);
 		require(isLotteryActive, 'Lottery is not active now');
 		require(playersList[msg.sender] < counter, 'Only one bet for game');
@@ -90,6 +90,7 @@ contract Lottery is Ownable, usingOraclize {
 				ORACLIZE_GAS_LIMIT
 			);
 
+			nextQueryId = queryId;
 			pendingQueries[queryId] = true;
 			emit event_random_query_request('Oraclize computation query was request');
 		} else if (playersCount == 1){
@@ -104,16 +105,18 @@ contract Lottery is Ownable, usingOraclize {
 	// the oraclize_randomDS_proofVerify modifier prevents an invalid proof to execute this function code:
 	// the proof validity is fully verified on-chain
 	function __callback(bytes32 myid, string result, bytes proof) public {
-		_result = "0";
 		require(msg.sender == oraclize_cbAddress(), 'Caller is not Oraclize address!');
         require(pendingQueries[myid], 'Query has already been processed!');
 
-		rndNumber = parseInt(result);
-		distributeFunds(rndNumber);
-		reset();
-		counter++; // increment lottery counter
-		delete pendingQueries[myid];
-		emit event_random_query_result('Oraclize computation query was received');
+        if (nextQueryId == myid){ // for avoid overlay oraclize queries
+        	rndNumber = parseInt(result);
+        	emit event_log_uint(rndNumber);
+			distributeFunds(rndNumber);
+			reset();
+			counter++; // increment lottery counter
+			delete pendingQueries[myid];
+			emit event_random_query_result('Oraclize computation query was received');
+        }
 	}
 
 	function distributeFunds(uint winningNumber) private {
@@ -126,7 +129,7 @@ contract Lottery is Ownable, usingOraclize {
 		}
 	}
 
-	function calculateTotalPrize() public constant returns (uint256){
+	function calculateTotalPrize() public constant returns (uint){
 		uint totalPercent = 100 - commission;
 		if (totalPercent >= 0){
 			return (totalBalance / 100) * totalPercent;
@@ -136,11 +139,9 @@ contract Lottery is Ownable, usingOraclize {
 
 
 	function invoke() public onlyOwner {
-		if (playersCount > 0){
-			_result = "6";
-			isLotteryActive = false;
-			determineWinner();
-		}
+		require(playersCount > 0, 'Players count must be greater than 0');
+		isLotteryActive = false;
+		determineWinner();
 	}
 
 	function reset() private {

@@ -6,6 +6,8 @@
     "start-bridge": "node bridge -H localhost:8545 -a 9 --dev",
     "build": "node scripts/build.js",
     "build-contracts": "sol-merger \"./contracts/*.sol\" ./build",
+    "migrate-dev": "truffle migrate --reset --network development && ./scripts/copy-built-contracts.sh",
+    "migrate-prod": "truffle migrate --reset --network rinkeby && ./scripts/copy-built-contracts.sh",
     "test": "node scripts/test.js --env=jsdom"
   },
   "dependencies": {

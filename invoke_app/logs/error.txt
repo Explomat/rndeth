@@ -1,3 +1,6 @@
-2018-10-16T01:01:28.143Z  LotteryWeek: Impossible make transaction, conditions not done
-2018-10-16T01:01:28.239Z  LotteryDaily: Impossible make transaction, conditions not done
-2018-10-16T01:01:28.431Z  LotteryMonth: Impossible make transaction, conditions not done
+2018-10-17T00:33:40.515Z  LotteryMonth: Impossible make transaction, conditions not done
+2018-10-17T00:33:42.926Z  LotteryWeek: Impossible make transaction, conditions not done
+2018-10-18T22:32:59.446Z  LotteryWeek: Impossible make transaction, conditions not done
+2018-10-18T22:32:59.847Z  LotteryMonth: Impossible make transaction, conditions not done
+2018-10-18T23:11:30.150Z  LotteryWeek: Impossible make transaction, conditions not done
+2018-10-18T23:11:31.470Z  LotteryMonth: Impossible make transaction, conditions not done

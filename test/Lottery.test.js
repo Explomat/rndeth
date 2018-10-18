@@ -9,115 +9,154 @@ const web3 = new Web3(provider);
 const Lottery = artifacts.require('Lottery.sol');
 const initState = {
 	ipfsHash: 'QmQrpE9sfQrKc5RKqu5foxWWiRRycc24nQqc2mBzXk44oB',
-	equalBet: 10000000000000000, //in wei == 0.01 ether
+	equalBet: web3.toWei('0.1', 'ether'),
 	commission: 10, //percent
 	contract: {
-		value: 100000000000000000
+		value: web3.toWei('0.1', 'ether'),
 	}
 }
 
+const getAccountBalance = account => {
+	return new Promise((resolve, reject) => {
+		web3.eth.getBalance(account, (error, result) => {
+			if (error) reject(error);
+			console.log(result);
+			resolve(result);
+		});
+	});
+}
 
-// Define tests
 contract('Lottery', accounts => {
 	let lottery;
 
 	// use fresh contract for each test
 	beforeEach('Setup contract for each test', async function() {
 		lottery = await Lottery.new(...Object.values(initState));
-	})
+	});
+
+	it('transfer for recipient, when many players', async function(){
+
+		this.timeout(1200 * 1000);
+
+		let err, result;
+
+		await lottery.bet({
+			from: accounts[0],
+			value: web3.toWei('0.1', 'ether')
+		});
+
+		await lottery.bet({
+			from: accounts[1],
+			value: web3.toWei('0.1', 'ether')
+		});
+
+		await lottery.bet({
+			from: accounts[2],
+			value: web3.toWei('0.1', 'ether')
+		});
+
+		[err, result] = await to(lottery.invoke({
+			from: accounts[0]
+		}));
+
+		if (err){
+			console.log(err);
+			return;
+		}
+
+		const eventRandomQueryResult = lottery.event_random_query_result();
+		const eventTransfer = lottery.event_transfer();
+
+		let checkForNumber = new Promise((resolve, reject) => {
+
+			eventRandomQueryResult.watch(async function(error, result) {
+
+				if (error) {
+					reject(error);
+				}
+
+				const bigNumber = await lottery.rndNumber();
+				const randomNumber = bigNumber.toNumber();
+
+				console.log(randomNumber);
+
+				eventRandomQueryResult.stopWatching();
+				resolve(randomNumber);
+			})
+		});
+
+		let checkForTransfer = new Promise((resolve, reject) => {
+
+			eventTransfer.watch(async function(error, result) {
+
+				if (error) {
+					reject(error);
+				}
+
+				resolve(true);
+			})
+		});
+
+		const randomNumber = await checkForNumber;
+		const transfer = await checkForTransfer;
+
+		assert.isAtLeast(randomNumber, 0, 'randomNumber is greater or equal 0');
+		assert.isBelow(randomNumber, 3, 'randomNumber is strictly less than 2');
+		assert(transfer, 'Not transfered to recipient');
+	});
+
+	it('transfer for recipient, when one player', async function(){
+		const playerAddress = accounts[0];
+
+		await lottery.bet({
+			from: playerAddress,
+			value: web3.toWei('0.1', 'ether')
+		});
+
+		const result = await lottery.invoke({
+			from: playerAddress,
+		});
+
+		let testPassed = false;
+		for (let i = 0; i < result.logs.length; i++) {
+			let log = result.logs[i];
+			if (log.event === 'event_transfer' && log.args.t === playerAddress) {
+				testPassed = true;
+			}
+		}
+
+		assert(testPassed, '"event_transfer" event not found');
+	});
 
 	// check that it sends a query and receives a response
-	it('sends a delay query and receives a response', async function() {
+	it('Different players for one lottery circle', async function() {
 		let err;
 		// for simplicity, we'll do both checks in this function
 
 		// set this test to timeout after 1 minute
 		//this.timeout(60 * 1000);
 
+		await lottery.bet({
+			from: accounts[0],
+			value: web3.toWei('0.1', 'ether')
+		});
+
 		[err] = await to(lottery.bet({
 			from: accounts[0],
-			value: 10000000000000000,
-			gas: 3000000,
+			value: web3.toWei('0.1', 'ether')
 		}));
-		if (err) { console.log(err); return; }
-		
 
-		[err] = await to(lottery.invoke({
-			from: accounts[0]
-		}));
-		if (err) { console.log(err); return; }
+		[err, playersCount] = await to(lottery.playersCount());
+		assert.equal(playersCount, 1, 'Players count must be 1');
 
-		[err] =  await to(lottery.bet({
-			from: accounts[0],
-			value: 10000000000000000,
-			gas: 3000000,
-		}));
-		if (err) { console.log(err); return; }
 
-		/*const result = await lottery.delayRequest(0, 0, {
-			from: accounts[0]
+		await lottery.bet({
+			from: accounts[1],
+			value: web3.toWei('0.1', 'ether')
 		});
 
-		let testPassed = false // variable to hold status of result
-		for (let i = 0; i < result.logs.length; i++) {
-			let log = result.logs[i]
-			if (log.event === 'event_delay_query_request') {
-				// we found the event
-				testPassed = true
-			}
-		}
-		assert.equal(testPassed, false);*/
-
-		//assert(testPassed, '"event_delay_query_request" event not found');
-/*
-		const event_delay_query_result = lottery.event_delay_query_result();
-
-		// create promise so Mocha waits for value to be returned
-		let checkForRequest = new Promise((resolve, reject) => {
-			// watch for our LogResultReceived event
-			event_delay_query_result.watch(async function(error, result) {
-				if (error) {
-					reject(error);
-				}
-				event_delay_query_result.stopWatching();
-				resolve(true);
-				//resolve(randomNumber);
-			}) // end LogResultReceived.watch()
-		}) // end new Promise
-
-		const resultRequest = await checkForRequest;
-
-		assert.equal(resultRequest, true);*/
-
-
-		// Method 1 to check for events: loop through the "result" variable
-
-		// look for the LogOraclizeQuery event to make sure query sent
-		/*let testPassed = false // variable to hold status of result
-		for (let i = 0; i < result.logs.length; i++) {
-			let log = result.logs[i]
-			if (log.event === 'event_delay_query_request') {
-				// we found the event
-				testPassed = true
-			}
-		}
-		assert(testPassed, '"event_delay_query_request" event not found');*/
-
-
-		// call promise and wait for result
-		// ensure result is within our query's min/max values
-		/*assert.isAtLeast(randomNumber, 1, 'Random number was less than 1');
-		assert.isAtMost(randomNumber, 1000, 'Random number was greater than 1000');*/
+		[err, playersCount] = await to(lottery.playersCount());
+		assert.equal(playersCount, 2, 'Players count must be 2');
 
 	});
-
-	/*it('determineWinner not calling while players count is 0', async function() {
-		this.timeout(60 * 1000);
-		await lottery.delayRequest(0, 0, {
-			from: accounts[0]
-		});
-
-		const isLotteryActive = await lottery.isLotteryActive();
-		assert.equal(isLotteryActive, false);
-	});*/
 });

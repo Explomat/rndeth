@@ -36,7 +36,7 @@ export function test(number) {
 					})*/
 
 					// Attempt to sign up user.
-					lotteryInstance.bet({from: coinbase, value: 10000000000000000 }) 
+					lotteryInstance.bet({from: coinbase, value: 100000000000000000 }) 
 					.then(function(result) {
 						// If no error, login user.
 						//return dispatch(loginUser())

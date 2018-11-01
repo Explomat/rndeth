@@ -1,12 +1,10 @@
-import { combineReducers } from 'redux'
-import { routerReducer } from 'react-router-redux'
-import userReducer from './user/userReducer'
-import web3Reducer from './util/web3/web3Reducer'
+import { combineReducers } from 'redux';
+import lotteryReducer from './lottery/lotteryReducer';
+import web3Reducer from './utils/web3/web3Reducer';
 
 const reducer = combineReducers({
-	routing: routerReducer,
-	user: userReducer,
+	lottery: lotteryReducer,
 	web3: web3Reducer
 })
 
-export default reducer
+export default reducer;

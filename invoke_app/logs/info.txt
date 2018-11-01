@@ -1,60 +1,12 @@
-2018-10-17T00:33:38.429Z  ---------0------------: 
-2018-10-17T00:33:38.438Z  ---------1------------: 
-2018-10-17T00:33:38.444Z  ---------2------------: 
-2018-10-17T00:33:38.444Z  ---------3------------: 
-2018-10-17T00:33:38.444Z  ---------5------------: 
-2018-10-17T00:33:38.462Z  ---------6------------: 
-2018-10-17T00:33:38.490Z  ---------3------------: 
-2018-10-17T00:33:38.490Z  ---------5------------: 
-2018-10-17T00:33:38.494Z  ---------6------------: 
-2018-10-17T00:33:38.498Z  ---------3------------: 
-2018-10-17T00:33:38.498Z  ---------5------------: 
-2018-10-17T00:33:38.500Z  ---------6------------: 
-2018-10-17T00:33:39.139Z  LotteryMonth: isLotteryActive = true
-2018-10-17T00:33:39.139Z  LotteryMonth: playersCount = 0
-2018-10-17T00:33:39.139Z  LotteryMonth: timeout = 540
-2018-10-17T00:33:39.152Z  LotteryDaily: isLotteryActive = true
-2018-10-17T00:33:39.152Z  LotteryDaily: playersCount = 2
-2018-10-17T00:33:39.152Z  LotteryDaily: timeout = 180
-2018-10-17T00:33:39.219Z  LotteryWeek: isLotteryActive = true
-2018-10-17T00:33:39.219Z  LotteryWeek: playersCount = 0
-2018-10-17T00:33:39.219Z  LotteryWeek: timeout = 360
-2018-10-17T00:33:40.515Z  LotteryMonth: diffDates = 0
-2018-10-17T00:33:41.847Z  LotteryDaily: diffDates = 0
-2018-10-17T00:33:42.772Z  LotteryDaily: Gas price (low) = 1.6
-2018-10-17T00:33:42.926Z  LotteryWeek: diffDates = 0
-2018-10-17T00:33:43.401Z  LotteryDaily: Estimate gas = 151798
-2018-10-17T00:33:43.976Z  LotteryDaily: Nonce = 407
-2018-10-17T00:33:44.617Z  LotteryDaily: 0x3df009171dd4d952de98d39b0a762b60b18eb265e84e6b5f4642dc7099a7f911
-2018-10-18T22:32:58.159Z  LotteryDaily: isLotteryActive = true
-2018-10-18T22:32:58.160Z  LotteryDaily: playersCount = 5
-2018-10-18T22:32:58.160Z  LotteryDaily: timeout = 180
-2018-10-18T22:32:58.333Z  LotteryWeek: isLotteryActive = true
-2018-10-18T22:32:58.333Z  LotteryWeek: playersCount = 0
-2018-10-18T22:32:58.333Z  LotteryWeek: timeout = 360
-2018-10-18T22:32:58.337Z  LotteryMonth: isLotteryActive = true
-2018-10-18T22:32:58.337Z  LotteryMonth: playersCount = 0
-2018-10-18T22:32:58.337Z  LotteryMonth: timeout = 540
-2018-10-18T22:32:59.418Z  LotteryDaily: diffDates = 0
-2018-10-18T22:32:59.446Z  LotteryWeek: diffDates = 0
-2018-10-18T22:32:59.847Z  LotteryMonth: diffDates = 0
-2018-10-18T22:33:00.411Z  LotteryDaily: Gas price (low) = 2.1
-2018-10-18T22:33:01.032Z  LotteryDaily: Estimate gas = 171807
-2018-10-18T22:33:01.607Z  LotteryDaily: Nonce = 419
-2018-10-18T22:33:02.202Z  LotteryDaily: 0xf562623002d5c83a303b0537ac53ce2cd76fa0570acb8f6ad166bcbfeff70a69
-2018-10-18T23:11:28.985Z  LotteryDaily: isLotteryActive = true
-2018-10-18T23:11:28.986Z  LotteryDaily: playersCount = 5
-2018-10-18T23:11:28.986Z  LotteryDaily: timeout = 180
-2018-10-18T23:11:28.997Z  LotteryMonth: isLotteryActive = true
-2018-10-18T23:11:28.997Z  LotteryMonth: playersCount = 0
-2018-10-18T23:11:28.997Z  LotteryMonth: timeout = 540
-2018-10-18T23:11:29.000Z  LotteryWeek: isLotteryActive = true
-2018-10-18T23:11:29.000Z  LotteryWeek: playersCount = 0
-2018-10-18T23:11:29.000Z  LotteryWeek: timeout = 360
-2018-10-18T23:11:30.150Z  LotteryWeek: diffDates = 0
-2018-10-18T23:11:31.356Z  LotteryDaily: diffDates = 590
-2018-10-18T23:11:31.470Z  LotteryMonth: diffDates = 0
-2018-10-18T23:11:32.192Z  LotteryDaily: Gas price (low) = 2
-2018-10-18T23:11:32.839Z  LotteryDaily: Estimate gas = 141807
-2018-10-18T23:11:33.412Z  LotteryDaily: Nonce = 421
-2018-10-18T23:11:34.172Z  LotteryDaily: 0x9924742ee3cd973a8207a2569a164cba0c6e6ac2b61217e0c39297d8cddad969
+2018-10-20T16:56:15.683Z  LotteryDaily: isLotteryActive = true
+2018-10-20T16:56:15.684Z  LotteryDaily: playersCount = 0
+2018-10-20T16:56:15.684Z  LotteryDaily: timeout = 1
+2018-10-20T16:56:15.707Z  LotteryMonth: isLotteryActive = true
+2018-10-20T16:56:15.707Z  LotteryMonth: playersCount = 0
+2018-10-20T16:56:15.707Z  LotteryMonth: timeout = 30
+2018-10-20T16:56:15.808Z  LotteryWeek: isLotteryActive = true
+2018-10-20T16:56:15.808Z  LotteryWeek: playersCount = 0
+2018-10-20T16:56:15.808Z  LotteryWeek: timeout = 7
+2018-10-20T16:56:17.439Z  LotteryDaily: diffDays = 1
+2018-10-20T16:56:19.814Z  LotteryWeek: diffDays = 0
+2018-10-20T16:56:19.815Z  LotteryMonth: diffDays = 0

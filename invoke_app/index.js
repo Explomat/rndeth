@@ -21,15 +21,14 @@ console.error = log.error.bind(log);
 console.debug = log.debug.bind(log);
 
 const getContracts = () => {
-	const c = [];
-	glob.sync('./contracts/*.json').forEach(file => {
-		c.push(require(path.resolve(file)));
-	});
-	return c;
+	return glob.sync('./contracts/*.json').reduce((f, s) => {
+		f.push(require(path.resolve(s)));
+		return f;
+	}, []);
 }
 
 const getCurrentGasPrices = async () => {
-	const response = await axios.get(gasApiUrl)
+	const response = await axios.get(gasApiUrl);
 	return {
 		low: response.data.safeLow / 10,
 		medium: response.data.average / 10,
@@ -72,7 +71,6 @@ contracts.forEach(c => {
 
 		const [error, events] = await to(
 			contract.getPastEvents('event_random_query_result', {
-				//filter: { rqres: 'Oraclize computation query was received' },
 				fromBlock: 0,
 				toBlock: 'latest'
 			})
@@ -83,25 +81,24 @@ contracts.forEach(c => {
 			return;
 		}
 
-		let diffDates = 0;
+		let diffDays = 0;
 		const lastEvent = events[events.length - 1];
-		//console.debug(c.contractName, 'lastEvent:' + JSON.stringify(lastEvent));
 		if (lastEvent){
 			const block = await web3.eth.getBlock(lastEvent.blockHash);
 			if (block) {
 				const blockDate = new Date(block.timestamp * 1000);
-				diffDates = Math.round(Math.abs(new Date() - blockDate) / 1000);
+				const diffSeconds = Math.round(Math.abs(new Date() - blockDate) / 1000);
+				diffDays = Math.ceil(diffSeconds / (24 * 60 * 60));
 			}
 		}
 
-		console.log(c.contractName, `diffDates = ${diffDates}`);
+		console.log(c.contractName, `diffDays = ${diffDays}`);
 
-		if (
-			isLotteryActive && 
-			playersCount > 0 && 
-			((diffDates + (30 * 60)) >= timeout || diffDates === 0)){
+		if (isLotteryActive && 
+			parseInt(playersCount, 10) > 0 && 
+			(diffDays === parseInt(timeout, 10) || diffDays === 0)
+		) {
 			const contractFunction = contract.methods.invoke();
-			//const contractFunction = contract.methods.bet();
 
 			const functionAbi = contractFunction.encodeABI();
 			const gPrice = await getCurrentGasPrices();
@@ -114,10 +111,9 @@ contracts.forEach(c => {
 
 			let nonce = await web3.eth.getTransactionCount(account);
 
-			console.log(c.contractName, 'Nonce = ' + nonce);
 			const txParams = {
 				nonce: '0x' + nonce.toString(16),
-				chainId: parseInt(networkId, 10), //not working, when it has type "string"
+				chainId: parseInt(networkId, 10), //not working, when type is "string"
 				gasPrice: '0x' + (gPrice.low * 1000000000).toString(16),
 				gasLimit: '0x' + Math.floor(estimatedGas).toString(16),
 				from: account,

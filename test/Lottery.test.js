@@ -128,13 +128,8 @@ contract('Lottery', accounts => {
 		assert(testPassed, '"event_transfer" event not found');
 	});
 
-	// check that it sends a query and receives a response
 	it('Different players for one lottery circle', async function() {
 		let err;
-		// for simplicity, we'll do both checks in this function
-
-		// set this test to timeout after 1 minute
-		//this.timeout(60 * 1000);
 
 		await lottery.bet({
 			from: accounts[0],

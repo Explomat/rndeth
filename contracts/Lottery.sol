@@ -79,7 +79,14 @@ contract Lottery is Ownable, usingOraclize {
 				return;
 			}
 
-			bytes32 queryId = oraclize_query( 
+			bytes32 queryId = oraclize_query(
+				'URL',
+				'json(https://api.random.org/json-rpc/1/invoke).result.random.data.0',
+				strConcat('\n{"jsonrpc": "2.0", "method": "generateSignedIntegers", "params": {"apiKey": "11c0c31c-2e26-4b94-943a-702dee93ef88", "n": "1", "min": "0", "max": ', uint2str(playersCount), ', "replacement": "true", "base": "10"}, "id": "14215" }'),
+				ORACLIZE_GAS_LIMIT
+			);
+
+			/*bytes32 queryId = oraclize_query( 
 				'computation', 
 				[
 					strConcat('json(', ipfsHash, ').result.random.data.0'),
@@ -88,7 +95,7 @@ contract Lottery is Ownable, usingOraclize {
 					uint2str(playersCount)
 				], 
 				ORACLIZE_GAS_LIMIT
-			);
+			);*/
 
 			nextQueryId = queryId;
 			pendingQueries[queryId] = true;
@@ -101,9 +108,6 @@ contract Lottery is Ownable, usingOraclize {
 		}	
 	}
 
-	// the callback function is called by Oraclize when the result is ready
-	// the oraclize_randomDS_proofVerify modifier prevents an invalid proof to execute this function code:
-	// the proof validity is fully verified on-chain
 	function __callback(bytes32 myid, string result, bytes proof) public {
 		require(msg.sender == oraclize_cbAddress(), 'Caller is not Oraclize address!');
         require(pendingQueries[myid], 'Query has already been processed!');

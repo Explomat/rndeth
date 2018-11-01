@@ -1,54 +1,47 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router'
-import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
+import React, { Component } from 'react';
+import { Route, Link } from 'react-router-dom';
+import Home from './layouts/home/Home';
+import Period from './lottery/layouts/period';
+import ErrorContainer from './lottery/ui/error/ErrorContainer';
+import { AlertWarning } from './lottery/ui/controls/alert';
+//import { HiddenOnlyAuth, VisibleOnlyAuth } from './util/wrappers.js'
 
 // UI Components
-import LoginButtonContainer from './user/ui/loginbutton/LoginButtonContainer'
-import LogoutButtonContainer from './user/ui/logoutbutton/LogoutButtonContainer'
+//import LoginButtonContainer from './user/ui/loginbutton/LoginButtonContainer'
+//import LogoutButtonContainer from './user/ui/logoutbutton/LogoutButtonContainer'
 
 // Styles
-import './css/oswald.css'
-import './css/open-sans.css'
-import './css/pure-min.css'
-import './App.css'
+import './css/oswald.css';
+import './css/open-sans.css';
+import './css/pure-min.css';
+import './css/grids-responsive-min.css';
+import './App.css';
 
 class App extends Component {
 	render() {
-		const OnlyAuthLinks = VisibleOnlyAuth(() =>
-			<span>
-				<li className="pure-menu-item">
-					<Link to="/dashboard" className="pure-menu-link">Dashboard</Link>
-				</li>
-				<li className="pure-menu-item">
-					<Link to="/profile" className="pure-menu-link">Profile</Link>
-				</li>
-				<LogoutButtonContainer />
-			</span>
-		)
-
-		const OnlyGuestLinks = HiddenOnlyAuth(() =>
-			<span>
-				<li className="pure-menu-item">
-					<Link to="/signup" className="pure-menu-link">Sign Up</Link>
-				</li>
-				<LoginButtonContainer />
-			</span>
-		)
-
 		return (
-			<div className="App">
-				<nav className="navbar pure-menu pure-menu-horizontal">
-					<ul className="pure-menu-list navbar-right">
-						<OnlyGuestLinks />
-						<OnlyAuthLinks />
+			<div className='App'>
+				<nav className='navbar pure-menu pure-menu-horizontal'>
+					<ul className='pure-menu-list navbar-right'>
+						<span>
+							<li className='pure-menu-item'>
+								<a href='https://github.com/explomat/rndeth' target='__blank' className='pure-menu-link'>GitHub</a>
+							</li>
+						</span>
 					</ul>
-					<Link to="/" className="pure-menu-heading pure-menu-link">Truffle Box</Link>
+					<Link to='/' className='pure-menu-heading pure-menu-link'>Random Ethereum</Link>
 				</nav>
+				<AlertWarning className='warning' isClose={false}>
+					In order to be able to use this d-application, you will need to use the MetaMask browser add-on.
+					Learn more <a href='https://metamask.io/' target='__blank'>metamask.io</a>
+				</AlertWarning>
 
-				{this.props.children}
+				<Route exact path='/' component={Home} />
+				<Route path='/:period(Daily|Weekly|Monthly)' component={Period} />
+				<Route path='/error' component={ErrorContainer} />
 			</div>
 		);
 	}
 }
 
-export default App
+export default App;

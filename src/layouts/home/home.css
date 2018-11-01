@@ -1,0 +1,16 @@
+.period-item {
+	min-height: 200px;
+	padding: 4px;
+	border: 1px solid #ddd;
+	box-sizing: border-box;
+	margin-top: 8px;
+	border-radius: 4px;
+	background-color: #fff;
+
+	&.period-item--daily {
+		margin-right: 8px;
+	}
+	&.period-item--weekly {
+		margin-left: 8px;
+	}
+}

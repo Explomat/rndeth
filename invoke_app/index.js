@@ -4,7 +4,7 @@ const glob = require('glob')
 	, Tx = require('ethereumjs-tx')
 	, axios = require('axios')
 	, to = require('./utils/to.js')
-	, accountData = require('./config.json')
+	, config = require('./config.json')
 	, logger = require('./utils/logger')
 	, gasApiUrl = 'https://ethgasstation.info/json/ethgasAPI.json';
 
@@ -36,9 +36,7 @@ const getCurrentGasPrices = async () => {
 	}
 }
 
-const privateKey = Buffer.from(accountData.private_key, 'hex');
-const infuraAccessToken = accountData.infura_access_token;
-const account = accountData.address;
+const infuraAccessToken = config.infura_access_token;
 const contracts = getContracts();
 
 const providerUrl =
@@ -51,15 +49,24 @@ const web3 = new Web3(provider);
 contracts.forEach(c => {
 	const networkId = Object.keys(c.networks)[0];
 
+	if (!config.networks[networkId]) {
+		console.error(c.contractName, 'No network in config, networkId:' + networkId);
+		return;
+	}
+
+	const privateKey = Buffer.from(config.networks[networkId].private_key, 'hex');
+	const account = config.networks[networkId].address;
+
 	if (!networkId) {
 		console.error(c.contractName, 'No network in contract data');
 		return;
 	}
 
+	
 	const contractAddress = c.networks[networkId].address;
 	const abi = c.abi;
 	const contract = new web3.eth.Contract(abi, contractAddress);
-
+	console.log('1');
 	Promise.all([
 		contract.methods.isLotteryActive().call(),
 		contract.methods.playersCount().call(),

@@ -13,7 +13,7 @@ class PeriodForm extends Component {
 					<br />
 
 					<button type="submit" className="pure-button pure-button-primary">Update</button>*/}
-					<ButtonPrimary type='submit'>Bet</ButtonPrimary>
+					<ButtonPrimary type='submit'>PLACE A BET</ButtonPrimary>
 				</fieldset>
 			</form>
 		)

@@ -16,6 +16,29 @@ const getCurrentLotteryContract = period => {
 	);
 }
 
+export function getETHPrice(){
+	return function(dispatch) {
+		dispatch({ type: constants.GET_ETH_PRICE });
+
+		fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD&extraParams=rndeth')
+		.then(data => {
+			return data.json();
+		})
+		.then(data => {
+			dispatch({
+				type: constants.GET_ETH_PRICE_SUCCESS,
+				price: data.USD
+			})
+		})
+		.catch(error => {
+			dispatch({
+				type: constants.GET_ETH_PRICE_FAILURE,
+				error
+			})
+		});
+	}
+}
+
 export function getContractData(period){
 
 	return function(dispatch, getState) {

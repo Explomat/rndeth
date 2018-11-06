@@ -6,8 +6,8 @@ contract LotteryWeekly is Lottery {
 
 	uint public constant TIMEOUT = 7; // timeout for 7 day
 
-	constructor(string _ipfsHash, uint _equalBet, uint _commission)
-	Lottery(_ipfsHash, _equalBet, _commission)
+	constructor(uint _equalBet, uint _commission)
+	Lottery(_equalBet, _commission)
 	public
 	payable {}
 }

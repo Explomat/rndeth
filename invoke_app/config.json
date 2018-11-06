@@ -1,5 +1,9 @@
 {
-	"address": "0xd0a63def2d61bca8f31f9a8fb2ca114d38b2b244",
-	"private_key": "ca012396a8f0a56bf3ae92a6e765fe5fbbf24a81d9b73eef8e15c96b7ba74c5f",
+	"networks": {
+		"3": {
+			"address": "0x217B6079A3C7698230E53ccDb2f98B11058cBE12",
+			"private_key": "aa300014e0bdf7ad0951d8a6c053079f24f45ef2ee2298cd392458c1929919ee"
+		}
+	},
 	"infura_access_token": "5ab4dd7c7baa4882a9fdb1b8ea6a37b2"
 }

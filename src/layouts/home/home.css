@@ -1,16 +1,45 @@
 .period-item {
+	position: relative;
+	display: block;
 	min-height: 200px;
 	padding: 4px;
 	border: 1px solid #ddd;
 	box-sizing: border-box;
 	margin-top: 8px;
 	border-radius: 4px;
-	background-color: #fff;
+
+	box-shadow: 7px 3px 29px -2px rgba(11,12,15,0.27);
 
 	&.period-item--daily {
-		margin-right: 8px;
+		background-color: #0c1a2be0;
+		color: #daa90e;
 	}
 	&.period-item--weekly {
+		background-color: #0c1a2be0;
+		color: #daa90e;
+	}
+	&.period-item--monthly {
+		background-color: #daa90e;
+		color: #0c1a2be0;
+	}
+
+	& .period-item__title {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		margin: 0px;
+		text-transform: uppercase;
+	}
+}
+
+@media screen and (min-width:48em) {
+	.period-item.period-item--daily {
+		margin-right: 8px;
+		
+	}
+
+	.period-item.period-item--weekly {
 		margin-left: 8px;
 	}
 }

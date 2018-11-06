@@ -28,13 +28,13 @@
 		vertical-align: middle;
 	}
 
-	&:active {
+	&:active, &:focus, &:hover {
 		background: linear-gradient(#ddd, #fff);
 	}
 
 	&.button-default--disabled {
 		background-color: #bababa !important;
-		border: 1px solid color(#bababa b(10%)) !important;
+		border: 1px solid color-mod(#bababa shade(10%)) !important;
 	}
 
 	&.button-default--selected{
@@ -44,12 +44,16 @@
 	&.button-default--primary {
 		background-image: none;
 		background-color: var(--button-primary-color);
-		border: 1px solid color(var(--button-primary-color) b(10%));
+		border: 1px solid color-mod(var(--button-primary-color) shade(10%));
 		color: #fff;
+
+		&:active, &:focus, &:hover {
+			background-color: color-mod(var(--button-primary-color) shade(20%));
+		}
 
 		&.button-default--primary--reverse {
 			background-color: #fff;
-			border: 1px solid color(var(--button-primary-color) b(10%));
+			border: 1px solid color-mod(var(--button-primary-color) shade(10%));
 			color: var(--button-primary-color);
 		}
 	}
@@ -57,12 +61,16 @@
 	&.button-default--success {
 		background-image: none;
 		background-color: var(--button-success-color);
-		border: 1px solid color(var(--button-success-color) b(10%));
+		border: 1px solid color-mod(var(--button-success-color) shade(10%));
 		color: #fff;
+
+		&:active, &:focus, &:hover {
+			background-color: color-mod(var(--button-success-color) shade(20%));
+		}
 
 		&.button-default--success--reverse {
 			background-color: #fff;
-			border: 1px solid color(var(--button-success-color) b(10%));
+			border: 1px solid color-mod(var(--button-success-color) shade(10%));
 			color: var(--button-success-color);
 		}
 	}
@@ -70,12 +78,16 @@
 	&.button-default--info {
 		background-image: none;
 		background-color: var(--button-info-color);
-		border: 1px solid color(var(--button-info-color) b(10%));
+		border: 1px solid color-mod(var(--button-info-color) shade(10%));
 		color: #fff;
+
+		&:active, &:focus, &:hover {
+			background-color: color-mod(var(--button-info-color) shade(20%));
+		}
 
 		&.button-default--info--reverse {
 			background-color: #fff;
-			border: 1px solid color(var(--button-info-color) b(10%));
+			border: 1px solid color-mod(var(--button-info-color) shade(10%));
 			color: var(--button-info-color);
 		}
 	}
@@ -83,12 +95,16 @@
 	&.button-default--warning {
 		background-image: none;
 		background-color: var(--button-warning-color);
-		border: 1px solid color(var(--button-warning-color) b(10%));
+		border: 1px solid color-mod(var(--button-warning-color) shade(10%));
 		color: #fff;
+
+		&:active, &:focus, &:hover {
+			background-color: color-mod(var(--button-warning-color) shade(20%));
+		}
 
 		&.button-default--warning--reverse {
 			background-color: #fff;
-			border: 1px solid color(var(--button-warning-color) b(10%));
+			border: 1px solid color-mod(var(--button-warning-color) shade(10%));
 			color: var(--button-warning-color);
 		}
 	}
@@ -96,12 +112,16 @@
 	&.button-default--danger {
 		background-image: none;
 		background-color: var(--button-danger-color);
-		border: 1px solid color(var(--button-danger-color) b(10%));
+		border: 1px solid color-mod(var(--button-danger-color) shade(10%));
 		color: #fff;
+
+		&:active, &:focus, &:hover {
+			background-color: color-mod(var(--button-danger-color) shade(20%));
+		}
 
 		&.button-default--danger--reverse {
 			background-color: #fff;
-			border: 1px solid color(var(--button-danger-color) b(10%));
+			border: 1px solid color-mod(var(--button-danger-color) shade(10%));
 			color: var(--button-danger-color);
 		}
 	}

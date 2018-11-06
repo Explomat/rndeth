@@ -1,11 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
+import { error } from '../../appActions';
 import Error from './Error';
 
 import './error.css';
 
 const ErrorContainer = props => {
+	const { error } = props;
+
+	if (!error) return <Redirect to='/' />;
 	return (
 		<div className='overlay'>
 			<div className='overlay-alert'>
@@ -15,10 +19,11 @@ const ErrorContainer = props => {
 	);
 }
 
-const mapDispatchToProps = (state, ownProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
 	const { history } = ownProps;
 	return {
 		onClose: () => {
+			dispatch(error(null));
 			history.goBack();
 		}
 	}

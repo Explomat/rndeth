@@ -15,21 +15,21 @@ const Home = () => (
 		</AlertInfo>
 		<div className='pure-g'>
 			<div className='pure-u-1 pure-u-md-1-2'>
-				<div className='period-item period-item--daily'>
-					<Link to='/Daily'>Daily</Link>
-				</div>
+				<Link to='/Daily' className='period-item period-item--daily'>
+					<h1 className='period-item__title'>Daily Lottery</h1>
+				</Link>
 			</div>
 			<div className='pure-u-1 pure-u-md-1-2'>
-				<div className='period-item period-item--weekly'>
-					<Link to='/Weekly'>Weekly</Link>
-				</div>
+				<Link to='/Weekly' className='period-item period-item--weekly'>
+					<h1 className='period-item__title'>Weekly Lottery</h1>
+				</Link>
 			</div>
 		</div>
 		<div className='pure-g'>
 			<div className='pure-u-1'>
-				<div className='period-item period-item--monthly'>
-					<Link to='/Monthly'>Monthly</Link>
-				</div>
+				<Link to='/Monthly' className='period-item period-item--monthly'>
+					<h1 className='period-item__title'>Monthly Lottery</h1>
+				</Link>
 			</div>
 		</div>
 	</div>

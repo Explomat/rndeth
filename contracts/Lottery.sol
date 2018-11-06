@@ -30,9 +30,6 @@ contract Lottery is Ownable, usingOraclize {
 	// generating random number
 	uint public rndNumber; 
 
-	// ipfs hash
-	string public ipfsHash;
-
 	// disable players bet when process oraclize request
 	bool public isLotteryActive;
 	uint constant ORACLIZE_GAS_LIMIT = 300000;
@@ -46,11 +43,10 @@ contract Lottery is Ownable, usingOraclize {
 	mapping(address => uint) playersList; //mapping for counter
 	Player[] public players;
 
-	constructor(string _ipfsHash, uint _equalBet, uint _commission) public payable {
+	constructor(uint _equalBet, uint _commission) public payable {
 		oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
 
 		counter = 1;
-		ipfsHash = _ipfsHash;
 		equalBet = _equalBet;
 		commission = _commission;
 		isLotteryActive = true;
@@ -85,17 +81,6 @@ contract Lottery is Ownable, usingOraclize {
 				strConcat('\n{"jsonrpc": "2.0", "method": "generateSignedIntegers", "params": {"apiKey": "11c0c31c-2e26-4b94-943a-702dee93ef88", "n": "1", "min": "0", "max": ', uint2str(playersCount), ', "replacement": "true", "base": "10"}, "id": "14215" }'),
 				ORACLIZE_GAS_LIMIT
 			);
-
-			/*bytes32 queryId = oraclize_query( 
-				'computation', 
-				[
-					strConcat('json(', ipfsHash, ').result.random.data.0'),
-					'1',
-					'0',
-					uint2str(playersCount)
-				], 
-				ORACLIZE_GAS_LIMIT
-			);*/
 
 			nextQueryId = queryId;
 			pendingQueries[queryId] = true;
@@ -152,10 +137,6 @@ contract Lottery is Ownable, usingOraclize {
 		isLotteryActive = true;
 		totalBalance = 0;
 		playersCount = 0;
-	}
-
-	function changeIpfsHash(string _ipfsHash) public onlyOwner {
-		ipfsHash = _ipfsHash;
 	}
 
 	function changeCommission(uint _commission) public onlyOwner {

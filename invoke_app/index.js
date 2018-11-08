@@ -20,6 +20,13 @@ console.log = log.info.bind(log);
 console.error = log.error.bind(log);
 console.debug = log.debug.bind(log);
 
+const networkTypes = {
+	'1': 'mainnet',
+	'42': 'kovan',
+	'3': 'ropsten',
+	'4': 'rinkeby'
+}
+
 const getContracts = () => {
 	return glob.sync('./contracts/*.json').reduce((f, s) => {
 		f.push(require(path.resolve(s)));
@@ -36,21 +43,33 @@ const getCurrentGasPrices = async () => {
 	}
 }
 
+const getWeb3 = async url => {
+	const provider = new Web3.providers.HttpProvider(url);
+	const web3 = await new Web3(provider);
+	return web3;
+}
+
 const infuraAccessToken = config.infura_access_token;
 const contracts = getContracts();
 
-const providerUrl =
-	process.env.NODE_ENV === 'development' ?
-		'http://localhost:8545' :
-		'https://rinkeby.infura.io/v3/' + infuraAccessToken;
-const provider = new Web3.providers.HttpProvider(providerUrl);
-const web3 = new Web3(provider);
+let providerUrl, provider, web3, prevNetworkId;
 
-contracts.forEach(c => {
+contracts.forEach(async c => {
 	const networkId = Object.keys(c.networks)[0];
 
 	if (!config.networks[networkId]) {
 		console.error(c.contractName, 'No network in config, networkId:' + networkId);
+		return;
+	}
+
+	if (networkTypes[networkId]) {
+		providerUrl = `https://${networkTypes[networkId]}.infura.io/v3/${infuraAccessToken}`;
+		if (prevNetworkId !== networkId){
+			web3 = await getWeb3(providerUrl);
+			prevNetworkId = networkId;
+		}
+	} else {
+		console.error(c.contractName, 'Incorrect network id');
 		return;
 	}
 
@@ -66,7 +85,6 @@ contracts.forEach(c => {
 	const contractAddress = c.networks[networkId].address;
 	const abi = c.abi;
 	const contract = new web3.eth.Contract(abi, contractAddress);
-	console.log('1');
 	Promise.all([
 		contract.methods.isLotteryActive().call(),
 		contract.methods.playersCount().call(),
@@ -139,5 +157,7 @@ contracts.forEach(c => {
 		} else {
 			console.error(c.contractName, 'Impossible make transaction, conditions not done');
 		}
+	}).catch(e => {
+		console.error(c.contractName, e);
 	});
 });

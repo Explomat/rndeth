@@ -1,3 +1,12 @@
-2018-11-06T01:44:47.272Z  1: 
-2018-11-06T01:44:47.309Z  1: 
-2018-11-06T01:44:47.314Z  1: 
+2018-11-06T13:20:00.717Z  LotteryMonthly: isLotteryActive = true
+2018-11-06T13:20:00.718Z  LotteryMonthly: playersCount = 0
+2018-11-06T13:20:00.718Z  LotteryMonthly: timeout = 30
+2018-11-06T13:20:00.743Z  LotteryDaily: isLotteryActive = true
+2018-11-06T13:20:00.743Z  LotteryDaily: playersCount = 0
+2018-11-06T13:20:00.743Z  LotteryDaily: timeout = 1
+2018-11-06T13:20:00.852Z  LotteryWeekly: isLotteryActive = true
+2018-11-06T13:20:00.853Z  LotteryWeekly: playersCount = 0
+2018-11-06T13:20:00.853Z  LotteryWeekly: timeout = 7
+2018-11-06T13:20:01.364Z  LotteryMonthly: diffDays = 0
+2018-11-06T13:20:01.573Z  LotteryWeekly: diffDays = 0
+2018-11-06T13:20:02.048Z  LotteryDaily: diffDays = 1

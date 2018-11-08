@@ -12,6 +12,7 @@ const getTxUrl = (networkType, tx) => {
 		'mainnet': `https://etherscan.io/tx/${tx}`,
 		'ropsten': `https://ropsten.etherscan.io/tx/${tx}`,
 		'rinkeby': `https://rinkeby.etherscan.io/tx/${tx}`,
+		'kovan': `https://kovan.etherscan.io/tx/${tx}`,
 		'unknown': `https://unknown.etherscan.io/tx/${tx}`,
 	}
 	return networkTypes[networkType];
@@ -48,7 +49,7 @@ class PreriodFormContainer extends Component {
 					</div>
 				} 
 				<PeriodForm onSubmit={this.props.onBet}/>
-				{tx && <a href={getTxUrl(getNetworkType(networkId), tx)} target='__blank'>Watch transaction on explorer</a>}
+				{tx && <a href={getTxUrl(getNetworkType(networkId), tx)} target='__blank'>Watch transaction on explorer {tx}</a>}
 			</div>
 		);
 	}

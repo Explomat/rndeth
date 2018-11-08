@@ -178,8 +178,6 @@ module.exports = {
 					  flexbox: 'no-2009',
 					}),
 					postcssColorMod(),
-					/*require('postcss-color-function'),
-					postcssCustomProperties(),*/
 					require('postcss-nested')
 				  ],
 				},

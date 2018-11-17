@@ -1,30 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Redirect } from 'react-router-dom';
 import { error } from '../../appActions';
 import Error from './Error';
 
 import './error.css';
 
-const ErrorContainer = props => {
-	const { error } = props;
-
-	if (!error) return <Redirect to='/' />;
-	return (
-		<div className='overlay'>
-			<div className='overlay-alert'>
-				<Error {...props} />
+class ErrorContainer extends Component {
+	render(){
+		return (
+			<div className='overlay'>
+				<div className='overlay-alert'>
+					<Error {...this.props} />
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-	const { history } = ownProps;
 	return {
 		onClose: () => {
 			dispatch(error(null));
-			history.goBack();
 		}
 	}
 }
@@ -35,4 +31,4 @@ const mapStateToProps = (state, ownProps) => {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ErrorContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(ErrorContainer);

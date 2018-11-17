@@ -30,10 +30,11 @@ export function getETHPrice(){
 				price: data.USD
 			})
 		})
-		.catch(error => {
+		.catch(err => {
+			console.log(err);
 			dispatch({
 				type: constants.GET_ETH_PRICE_FAILURE,
-				error
+				err
 			})
 		});
 	}
@@ -43,9 +44,10 @@ export function getContractData(period){
 
 	return function(dispatch, getState) {
 
-		let web3 = getState().web3.web3Instance;
+		const state = getState();
+		let web3 = state.web3.web3Instance;
 
-		if (typeof web3 !== 'undefined') {
+		if (typeof web3 !== 'undefined' && web3 !== null) {
 			const lottery = getCurrentLotteryContract(period);
 
 			lottery.setProvider(web3.currentProvider);
@@ -60,6 +62,11 @@ export function getContractData(period){
 					return;
 				}
 
+				if (!coinbase){
+					dispatch(error('Coinbase not received. Please select your account in MetaMask'));
+					return;
+				}
+
 				lottery.deployed().then(function(instance) {
 					lotteryInstance = instance;
 
@@ -69,17 +76,20 @@ export function getContractData(period){
 						lotteryInstance.playersCount()
 					]).then(([ equalBet, totalBalance, playersCount ]) => {
 
-						const toEther = val => web3.fromWei(val.toNumber());
+						const toEther = val => web3.fromWei(val).toNumber();
 						dispatch({
 							type: constants.CONTRACT_GET_DATA_SUCCESS,
+							period,
 							equalBet: toEther(equalBet),
 							totalBalance: toEther(totalBalance),
 							playersCount: playersCount.toNumber()
 						});
 					}).catch(err => {
+						console.log(err.stack);
 						dispatch(error(err.message));
 					});
 				}).catch(err => {
+					console.log(err.stack);
 					dispatch(error(err.message));
 				});
 			});
@@ -93,9 +103,10 @@ export function bet(period) {
 
 	return function(dispatch, getState) {
 
-		if (typeof web3 !== 'undefined') {
-			const state = getState();
-			let web3 = state.web3.web3Instance;
+		const state = getState();
+		let web3 = state.web3.web3Instance;
+
+		if (typeof web3 !== 'undefined' && web3 !== null) {
 
 			const lottery = getCurrentLotteryContract(period);
 
@@ -111,12 +122,17 @@ export function bet(period) {
 					return;
 				}
 
+				if (!coinbase){
+					dispatch(error('Coinbase not received. Please select your account in MetaMask'));
+					return;
+				}
+
 				lottery.deployed().then(function(instance) {
 					lotteryInstance = instance;
 
 					lotteryInstance.bet({
 						from: coinbase,
-						value: web3.toWei(state.lottery.domain.equalBet)
+						value: web3.toWei(state.lottery[period].equalBet)
 					}).then(function(result) {
 						dispatch({
 							type: constants.CONTRACT_BET_SUCCESS,
@@ -125,9 +141,11 @@ export function bet(period) {
 						});
 						dispatch(getContractData(period));
 					}).catch(function(err) {
+						console.log(err.stack);
 						dispatch(error(err.message));
 					});
 				}).catch(err => {
+					console.log(err.stack);
 					dispatch(error(err.message));
 				});
 			});

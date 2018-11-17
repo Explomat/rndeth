@@ -8,10 +8,13 @@
 }
 
 .alert {
-	padding: 8px;
+	padding: 8px 16px;
 	border: 1px solid transparent;
 	border-radius: 4px;
 	display: inline-block;
+	white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
 
 	.close-button{
 		outline: 0;

@@ -1,3 +1,10 @@
+.error-boundary {
+	&__details {
+		white-space: pre-wrap;
+		margin-top: 10px;
+	}
+}
+
 .overlay {
 	position: fixed;
 	height: 100%;

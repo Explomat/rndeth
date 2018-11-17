@@ -86,11 +86,10 @@ contracts.forEach(async c => {
 	const abi = c.abi;
 	const contract = new web3.eth.Contract(abi, contractAddress);
 	Promise.all([
-		contract.methods.isLotteryActive().call(),
+		//contract.methods.isLotteryActive().call(),
 		contract.methods.playersCount().call(),
 		contract.methods.TIMEOUT().call()
-	]).then(async ([ isLotteryActive, playersCount, timeout ]) => {
-		console.log(c.contractName, `isLotteryActive = ${isLotteryActive}`);
+	]).then(async ([ playersCount, timeout ]) => {
 		console.log(c.contractName, `playersCount = ${playersCount}`);
 		console.log(c.contractName, `timeout = ${timeout}`);
 
@@ -119,9 +118,8 @@ contracts.forEach(async c => {
 
 		console.log(c.contractName, `diffDays = ${diffDays}`);
 
-		if (isLotteryActive && 
-			parseInt(playersCount, 10) > 0 && 
-			(diffDays === parseInt(timeout, 10) || diffDays === 0)
+		if (parseInt(playersCount, 10) > 0 && 
+			(diffDays >= parseInt(timeout, 10) || diffDays === 0)
 		) {
 			const contractFunction = contract.methods.invoke();
 

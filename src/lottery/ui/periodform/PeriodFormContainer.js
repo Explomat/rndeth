@@ -5,6 +5,7 @@ import { getETHPrice, getContractData, bet } from './PeriodFormActions';
 import { error } from '../../appActions';
 import PeriodForm from './PeriodForm';
 import ErrorBoundary from '../controls/error-boundary';
+import { AlertInfo } from '../controls/alert';
 import getNetworkType from '../../../utils/getNetworkType';
 
 import './period-form.css';
@@ -20,7 +21,7 @@ const getTxUrl = (networkType, tx) => {
 	return networkTypes[networkType];
 }
 
-const Period = ({ lottery, networkId, ethPrice, error, onBet }) => {
+const Period = ({ lottery, networkId, ethPrice, error, info, onBet }) => {
 	if (error) throw new Error(error);
 	return (
 		<div className='period-form'>
@@ -39,8 +40,9 @@ const Period = ({ lottery, networkId, ethPrice, error, onBet }) => {
 						<div className='period-form-item--value'>{lottery.playersCount}</div>
 					</div>
 				</div>
-			} 
-			<PeriodForm onSubmit={onBet}/>
+			}
+			{!lottery.isLotteryActive && info && <AlertInfo className='period-form__info' isClose={false}>{info}</AlertInfo>}
+			{lottery.isLotteryActive && <PeriodForm onSubmit={onBet} /> }
 			{lottery.tx && networkId && <a href={getTxUrl(getNetworkType(networkId), lottery.tx)} target='__blank'>Watch transaction on explorer {lottery.tx}</a>}
 		</div>
 	);
@@ -79,7 +81,8 @@ const mapStateToProps = (state, ownProps) => {
 		networkId: state.web3.networkId,
 		tx: period.tx,
 		ethPrice,
-		error: appState.error
+		error: appState.error,
+		info: appState.info
 	}
 }
 

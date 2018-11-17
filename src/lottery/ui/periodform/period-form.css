@@ -25,4 +25,8 @@
 			}
 		}
 	}
+
+	.period-form__info {
+		margin-top: 12px;
+	}
 }

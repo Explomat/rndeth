@@ -3,7 +3,8 @@ import { commonConstants } from './appActions';
 
 const appStateReducer = (state = {
 	ethPrice: null,
-	error: null
+	error: null,
+	info: null
 }, action) => {
 
 	switch(action.type) {
@@ -21,6 +22,13 @@ const appStateReducer = (state = {
 			}
 		}
 
+		case commonConstants.APP_INFO_MESSAGE: {
+			return {
+				...state,
+				info: action.infoMessage
+			}
+		}
+
 		default: return state;
 	}
 }
@@ -29,17 +37,19 @@ const contractReducer = (state = {
 	equalBet: 0,
 	totalBalance: 0,
 	playersCount: 0,
+	isLotteryActive: true,
 	tx: null
 }, action) => {
 
 	switch(action.type) {
 		case constants.CONTRACT_GET_DATA_SUCCESS: {
-			const { equalBet, totalBalance, playersCount } = action;
+			const { equalBet, totalBalance, playersCount, isLotteryActive } = action;
 			return {
 				...state,
 				equalBet,
 				totalBalance,
-				playersCount
+				playersCount,
+				isLotteryActive
 			}
 		}
 

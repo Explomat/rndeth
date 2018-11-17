@@ -8,7 +8,7 @@ const Period = ({ period }) => {
 		<main className='period'>
 			<div className='pure-g'>
 				<div className='pure-u-1-1'>
-					<h4>{period} period</h4>
+					<h4>{period[0].toUpperCase() + period.slice(1)} period</h4>
 					<PeriodFormContainer period={period}/>
 				</div>
 			</div>

@@ -11,7 +11,7 @@
 .button-default {
 	position: relative;
 	display: inline-block;
-	padding: .5em;
+	padding: .4em;
 	background-image: linear-gradient(#fff, #ddd);
 	border: 1px solid #ccc;
 	border-radius: 2px;

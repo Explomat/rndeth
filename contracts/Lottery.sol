@@ -55,7 +55,7 @@ contract Lottery is Ownable, usingOraclize {
 	function bet() public payable {
 		require(msg.value == equalBet);
 		require(isLotteryActive, 'Lottery is not active now');
-		require(playersList[msg.sender] < counter, 'Only one bet for game');
+		require(isPlayerNotReBid(msg.sender), 'Only one bet for game');
 
 		Player memory newPlayer = Player({
 			recipient: msg.sender,
@@ -141,6 +141,14 @@ contract Lottery is Ownable, usingOraclize {
 
 	function changeCommission(uint _commission) public onlyOwner {
 		commission = _commission;
+	}
+
+	function changeLotteryActive(bool _isLotteryActive) public onlyOwner {
+		isLotteryActive = _isLotteryActive;
+	}
+
+	function isPlayerNotReBid(address _sender) public view returns (bool) {
+		return playersList[_sender] < counter;
 	}
 
 	//catch ether

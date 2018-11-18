@@ -935,11 +935,11 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {
-    "1542461163351": {
+    "3": {
       "events": {},
       "links": {},
-      "address": "0xf32c40dd8c3302da13cb2234e4972794aeebedcc",
-      "transactionHash": "0x8ec98867a39b7d4f835e8b4bc975e20b013a62f0d1ea560b1ab418a3d9ec8c1b"
+      "address": "0x29176165ab26dc78f6b0025b582e8dc500a01a37",
+      "transactionHash": "0x051bc9f6562fb6e14f30f0d7d77a058079007c003e4f1753e0833aa63aa0229e"
     }
   },
   "schemaVersion": "2.0.1",

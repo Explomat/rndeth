@@ -4,35 +4,25 @@ const express = require('express');
 var path = require('path');
 
 const app = express();
-const staticOptions = {
-	dotfiles: 'ignore',
-	etag: false,
-	extensions: [ 'html' ],
-	index: false,
-	maxAge: '1d'
-};
 
-app.use(
-	express.static(__dirname, Object.assign(staticOptions, {
-	extensions: [ 'html', 'ico', 'json' ]
-})));
-app.use(
-	express.static(
-		path.join(__dirname, '/static'), Object.assign(staticOptions, {
-		extensions: [ 'css', 'js', 'map', 'woff2', 'svg', 'ttf', 'eot', 'woff' ]
-	}))
-);
+//const indexName = __filename.split('\\').pop().split('/').pop();
+const indexName = __filename.split(path.sep).pop();
+app.use(`/${indexName}`, (req, res, next) => {
+	return res.status(403).end('403 Forbidden');
+	next();
+});
 
-app.get('/', (req, res) => {
+app.use(express.static(__dirname));
+
+app.get('*', (req, res) => {
 	const fileName = path.join(__dirname, '/index.html');
 	res.status(200).sendFile(fileName);
 });
 
-if (module === require.main) {
-	const server = app.listen(process.env.PORT || 8080, () => {
-		const port = server.address().port;
-		console.log(`App listening on port ${port}`);
-	});
-}
+
+const server = app.listen(process.env.PORT || 8080, () => {
+	const port = server.address().port;
+	console.log(`App listening on port ${port}`);
+});
 
 module.exports = app;

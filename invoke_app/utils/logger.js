@@ -8,19 +8,23 @@ Logger.prototype = (function(){
 
 	let infoStream, errorStream, debugStream;
 
+	function concatDate(msg){
+		return new Date().toISOString() + '  ' + msg + '\n';
+	}
+
 	function reduceMessage(args){
 		args[0] = args[0] + ': ';
 		const str = args.reduce((first, second) => {
 			return first + second;
 		}, '');
-		return new Date().toISOString() + '  ' + str + '\n';
+		return concatDate(str);
 	}
 
 	function getMessage(args){
 		if (args.length === 0) return '';
 
 		if (args.length === 1){
-			return args[0];
+			return concatDate(args[0]);
 		}
 
 		return reduceMessage(args);

@@ -60,7 +60,7 @@ const getWeb3 = async url => {
 const invoke = async c => {
 	let web3;
 
-	return new Promise((resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		const infuraAccessToken = config.infura_access_token;
 		const networkId = Object.keys(c.networks)[0];
 
@@ -154,7 +154,7 @@ const invoke = async c => {
 					}
 				});
 			} else {
-				console.info(c.contractName, 'Impossible make transaction, conditions not done');
+				console.log(c.contractName, 'Impossible make transaction, conditions not done');
 				resolve();
 			}
 		}).catch(e => {

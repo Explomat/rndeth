@@ -1,0 +1,19 @@
+cron:
+- description: "daily lottery"
+  url: /daily
+  schedule: every 2 minutes
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 5
+- description: "weekly lottery"
+  url: /weekly
+  schedule: every 5 minutes
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 5
+- description: "monthly lottery"
+  url: /monthly
+  schedule: every 10 minutes
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 5

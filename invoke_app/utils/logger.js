@@ -16,6 +16,16 @@ Logger.prototype = (function(){
 		return new Date().toISOString() + '  ' + str + '\n';
 	}
 
+	function getMessage(args){
+		if (args.length === 0) return '';
+
+		if (args.length === 1){
+			return args[0];
+		}
+
+		return reduceMessage(args);
+	}
+
 	return {
 		constructor: Logger,
 
@@ -26,17 +36,23 @@ Logger.prototype = (function(){
 		},
 		info: function(){
 			const args = Array.prototype.slice.call(arguments);
-			const message = reduceMessage(args);
+			const message = getMessage(args);
+
+			if (message === '') return;
 			infoStream.write(message);
 		},
 		debug: function(){
 			const args = Array.prototype.slice.call(arguments);
-			const message = reduceMessage(args);
+			const message = getMessage(args);
+
+			if (message === '') return;
 			debugStream.write(message);
 		},
 		error: function(){
 			const args = Array.prototype.slice.call(arguments);
-			const message = reduceMessage(args);
+			const message = getMessage(args);
+
+			if (message === '') return;
 			errorStream.write(message);
 		}
 	}

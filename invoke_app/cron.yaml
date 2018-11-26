@@ -1,19 +1,22 @@
 cron:
 - description: "daily lottery"
   url: /daily
-  schedule: every 2 minutes
+  schedule: every day 12:00
+  target: invoke
   retry_parameters:
-    min_backoff_seconds: 30
+    min_backoff_seconds: 1800
     max_doublings: 5
 - description: "weekly lottery"
   url: /weekly
-  schedule: every 5 minutes
+  schedule: every monday 12:00
+  target: invoke
   retry_parameters:
-    min_backoff_seconds: 30
+    min_backoff_seconds: 1800
     max_doublings: 5
 - description: "monthly lottery"
   url: /monthly
-  schedule: every 10 minutes
+  schedule: 1 of month 12:00
+  target: invoke
   retry_parameters:
-    min_backoff_seconds: 30
+    min_backoff_seconds: 1800
     max_doublings: 5

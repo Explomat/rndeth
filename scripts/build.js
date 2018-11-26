@@ -123,7 +123,6 @@ function printErrors(summary, errors) {
 function build(previousSizeMap) {
 	console.log('Creating an optimized production build...');
 	webpack(config).run((err, stats) => {
-		console.log('-----------1--------------');
 		if (err) {
 			printErrors('Failed to compile.', [err]);
 			process.exit(1);

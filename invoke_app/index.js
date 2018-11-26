@@ -1,14 +1,13 @@
 'use strict';
 
 const express = require('express')
-	, glob = require('glob')
 	, path = require('path')
 	, Web3 = require('web3')
 	, Tx = require('ethereumjs-tx')
 	, axios = require('axios')
 	, to = require('./utils/to.js')
 	, config = require('./config.json')
-	, logger = require('./utils/logger')
+	//, logger = require('./utils/logger')
 	, gasApiUrl = 'https://ethgasstation.info/json/ethgasAPI.json';
 
 const dailyContract = require('./contracts/LotteryDaily.json')
@@ -16,18 +15,18 @@ const dailyContract = require('./contracts/LotteryDaily.json')
 	, monthlyContract = require('./contracts/LotteryMonthly.json')
 
 const app = express();
-
+/*
 const log = new logger({
-	infoPath: './logs/info.txt',
-	errorPath: './logs/error.txt',
-	debugPath: './logs/debug.txt'
+	infoPath: path.join(__dirname, './logs/info.txt'),
+	errorPath: path.join(__dirname, './logs/error.txt'),
+	debugPath: path.join(__dirname, './logs/debug.txt')
 });
 log.createStreams();
 
 console.log = log.info.bind(log);
 console.error = log.error.bind(log);
 console.debug = log.debug.bind(log);
-
+*/
 const networkTypes = {
 	'1': 'mainnet',
 	'42': 'kovan',
@@ -196,7 +195,7 @@ app.get('/monthly', (req, res) => {
 		});
 });
 
-const server = app.listen(process.env.PORT || 3001, () => {
+const server = app.listen(process.env.PORT || 3000, () => {
 	const port = server.address().port;
 	console.log(`Invoke app listening on port ${port}`);
 });

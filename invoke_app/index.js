@@ -7,7 +7,7 @@ const express = require('express')
 	, axios = require('axios')
 	, to = require('./utils/to.js')
 	, config = require('./config.json')
-	//, logger = require('./utils/logger')
+	, logger = require('./utils/logger')
 	, gasApiUrl = 'https://ethgasstation.info/json/ethgasAPI.json';
 
 const dailyContract = require('./contracts/LotteryDaily.json')
@@ -15,31 +15,37 @@ const dailyContract = require('./contracts/LotteryDaily.json')
 	, monthlyContract = require('./contracts/LotteryMonthly.json')
 
 const app = express();
-/*
-const log = new logger({
-	infoPath: path.join(__dirname, './logs/info.txt'),
-	errorPath: path.join(__dirname, './logs/error.txt'),
-	debugPath: path.join(__dirname, './logs/debug.txt')
-});
-log.createStreams();
 
-console.log = log.info.bind(log);
-console.error = log.error.bind(log);
-console.debug = log.debug.bind(log);
-*/
-const networkTypes = {
-	'1': 'mainnet',
-	'42': 'kovan',
-	'3': 'ropsten',
-	'4': 'rinkeby'
+// In google app engine console.log -> stdout
+// In dev mode we are logging into files
+if (process.env.NODE_ENV === 'development'){
+	const log = new logger({
+		infoPath: path.join(__dirname, './logs/info.txt'),
+		errorPath: path.join(__dirname, './logs/error.txt'),
+		debugPath: path.join(__dirname, './logs/debug.txt')
+	});
+	log.createStreams();
+
+	console.log = log.info.bind(log);
+	console.error = log.error.bind(log);
+	console.debug = log.debug.bind(log);
 }
 
-/*const getContracts = () => {
-	return glob.sync('./contracts/*.json').reduce((f, s) => {
-		f.push(require(path.resolve(s)));
-		return f;
-	}, []);
-}*/
+const getNodeUrl = netId => {
+	const networkTypes = {
+		'1': 'mainnet',
+		'42': 'kovan',
+		'3': 'ropsten',
+		'4': 'rinkeby'
+	}
+
+	if (networkTypes[netId]) {
+		return `https://${networkTypes[netId]}.infura.io/v3/${config.infura_access_token}`;
+	} else if (process.env.NODE_ENV === 'development') {
+		return 'http://localhost:8545';
+	}
+	return '';
+}
 
 const getCurrentGasPrices = async () => {
 	const response = await axios.get(gasApiUrl);
@@ -57,25 +63,24 @@ const getWeb3 = async url => {
 }
 
 const invoke = async c => {
-	let web3;
 
 	return new Promise(async (resolve, reject) => {
-		const infuraAccessToken = config.infura_access_token;
 		const networkId = Object.keys(c.networks)[0];
 
 		if (!networkId) {
-			reject(`${c.contractName}: No network in contract data`);
+			reject(`${c.contractName}: Contract has not been deployed`);
 		}
 
 		if (!config.networks[networkId]) {
-			reject(`${c.contractName}: No network in config, networkId: ${networkId}`);
+			reject(`${c.contractName}: Incorrect network id: ${networkId}`);
 		}
 
-		if (networkTypes[networkId]) {
-			web3 = await getWeb3(`https://${networkTypes[networkId]}.infura.io/v3/${infuraAccessToken}`);
-		} else {
-			reject(`${c.contractName}: Incorrect network id`);
+		const nodeUrl = getNodeUrl(networkId);
+		if (nodeUrl === '') {
+			reject(`${c.contractName}: Unknown network, network id: ${networkId}`);
 		}
+
+		const web3 = await getWeb3(nodeUrl);
 
 		const privateKey = Buffer.from(config.networks[networkId].private_key, 'hex');
 		const account = config.networks[networkId].address;
@@ -98,7 +103,7 @@ const invoke = async c => {
 			);
 
 			if (error) {
-				reject(`${c.contractName}: Events error while received = ${error}`);
+				reject(`${c.contractName}: Error while received events - ${error}`);
 			}
 
 			let diffDays = 0;
